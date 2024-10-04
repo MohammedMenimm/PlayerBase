@@ -1,21 +1,14 @@
-//
-//  ContentView.swift
-//  PlayerBase
-//
-//  Created by Mohammed Menim on 2024-10-04.
-//
-
+// ContentView.swift
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            List(players, id: \.name) { player in
+                PlayerRow(player: player)
+            }
+            .navigationTitle("Football Players")
         }
-        .padding()
     }
 }
 
