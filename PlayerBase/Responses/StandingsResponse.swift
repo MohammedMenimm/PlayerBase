@@ -6,3 +6,6 @@
 //
 
 import Foundation
+struct StandingsResponse: Codable {
+    let standings: [Standing]
+}

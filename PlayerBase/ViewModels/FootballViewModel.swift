@@ -21,7 +21,7 @@ class FootballViewModel: ObservableObject {
         }
 
         var request = URLRequest(url: url)
-        request.setValue("", forHTTPHeaderField: "X-Auth-Token") // Set the token in the header
+        request.setValue("b970f815f0154086813c866d2f1933ee", forHTTPHeaderField: "X-Auth-Token") // Set the token in the header
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -47,5 +47,40 @@ class FootballViewModel: ObservableObject {
         }
         task.resume()
     }
+    
+    @Published var standings: [TeamStanding] = []
+
+            func fetchStandings(for season: String) {
+                guard let url = URL(string: "https://api.football-data.org/v4/competitions/BL1/standings") else {
+                    print("Invalid URL")
+                    return
+                }
+
+                var request = URLRequest(url: url)
+                request.setValue("b970f815f0154086813c866d2f1933ee", forHTTPHeaderField: "X-Auth-Token")
+
+                URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+                    if let error = error {
+                        print("Error fetching standings: \(error.localizedDescription)")
+                        return
+                    }
+
+                    guard let data = data else {
+                        print("No data received")
+                        return
+                    }
+
+                    do {
+                        let standingsResponse = try JSONDecoder().decode(StandingsResponse.self, from: data)
+
+                        // Update the standings on the main thread
+                        DispatchQueue.main.async {
+                            self?.standings = standingsResponse.standings.flatMap { $0.table } // Assuming you want to flatten the tables
+                        }
+                    } catch {
+                        print("Error decoding JSON: \(error)")
+                    }
+                }.resume()
+            }
 
 }

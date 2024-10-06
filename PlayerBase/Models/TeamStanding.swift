@@ -1,14 +1,12 @@
 import Foundation
 
 struct TeamStanding: Codable, Identifiable {
-    var id: Int { team.id } // Use the team's unique ID as the SwiftUI identifier
-    
+    let id = UUID() // This remains for SwiftUI purposes, but it's outside of Codable handling
     let position: Int
     let team: TeamInfo
     let playedGames: Int
-    let form: String? // Optional since it can be null
     let won: Int
-    let drawn: Int
+    let drawn: Int? // Optional to handle missing data
     let lost: Int
     let points: Int
     let goalsFor: Int

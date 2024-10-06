@@ -22,10 +22,18 @@ struct TeamListView: View {
                         .padding(.leading, 8) // Optional: add some padding
                 }
             }
-            .navigationTitle("Football Teams")
+            .navigationTitle("Bundesliga Teams")
             .onAppear {
                 viewModel.fetchFootballTeams()
             }
+            
+            NavigationLink(destination: StandingsView()) {
+                             Text("View  Standings")
+                                 .padding()
+                                 .foregroundColor(.blue) // Optional: Style the text
+                                 .fontWeight(.bold) // Optional: Bold the text
+                         }
+            
         }
     }
 }
